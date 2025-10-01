@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Document Index</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .qr-section {
+            padding: 30px;
+            text-align: center;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .qr-section h2 {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        #qrcode {
+            display: inline-block;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .pdf-list {
+            padding: 30px;
+        }
+        
+        .pdf-list h2 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .pdf-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: #333;
+        }
+        
+        .pdf-item:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .pdf-icon {
+            width: 40px;
+            height: 40px;
+            background: #dc3545;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .pdf-info {
+            flex-grow: 1;
+        }
+        
+        .pdf-title {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+        
+        .pdf-description {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .arrow {
+            color: #667eea;
+            font-size: 20px;
+        }
+        
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 24px;
+            }
+            
+            .pdf-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .pdf-icon {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📄 PDF Document Library</h1>
+            <p>Access your documents anytime, anywhere</p>
+        </div>
+        
+        <div class="qr-section">
+            <h2>Scan to Access</h2>
+            <div id="qrcode"></div>
+        </div>
+        
+        <div class="pdf-list">
+            <h2>Available Documents</h2>
+            
+            <a href="GPIO BSI 238740 Rev 8 21 25.pdf" class="pdf-item" target="_blank">
+                <div class="pdf-icon">PDF</div>
+                <div class="pdf-info">
+                    <div class="pdf-title">BSI GPIO</div>
+                    <div class="pdf-description">GPIO Board Upgrade and Replacement</div>
+                </div>
+                <div class="arrow">→</div>
+            </a>
+            
+            <a href="277266-BSI Timing Gen Rev 82525.pdf" class="pdf-item" target="_blank">
+                <div class="pdf-icon">PDF</div>
+                <div class="pdf-info">
+                    <div class="pdf-title">277266 Timing Generator</div>
+                    <div class="pdf-description">6220 Timing Generator Replacement</div>
+                </div>
+                <div class="arrow">→</div>
+            </a>
+            
+            <a href="188859-BSI MDD Board Rev 8 25 25.pdf" class="pdf-item" target="_blank">
+                <div class="pdf-icon">PDF</div>
+                <div class="pdf-info">
+                    <div class="pdf-title">MDD Board</div>
+                    <div class="pdf-description">Motor Distribution/Driver Board Upgrade</div>
+                </div>
+                <div class="arrow">→</div>
+            </a>
+            
+            <a href="GSI Scanner 8 2025.pdf" class="pdf-item" target="_blank">
+                <div class="pdf-icon">PDF</div>
+                <div class="pdf-info">
+                    <div class="pdf-title">GSI Scanner</div>
+                    <div class="pdf-description">6xxx Scanner Replacement</div>
+                </div>
+                <div class="arrow">→</div>
+            </a>
+            <a href="SSL Field Laser Upgrade 8 25 25.pdf" class="pdf-item" target="_blank">
+                <div class="pdf-icon">PDF</div>
+                <div class="pdf-info">
+                    <div class="pdf-title">SSL Laser</div>
+                    <div class="pdf-description">Solid State Laser Upgrade</div>
+                </div>
+                <div class="arrow">→</div>
+            </a>
+            
+            <a href="Universal Field Kit Rev 8 2025.pdf" class="pdf-item" target="_blank">
+                <div class="pdf-icon">PDF</div>
+                <div class="pdf-info">
+                    <div class="pdf-title">UFK Rev 8</div>
+                    <div class="pdf-description">BSI Universal Field Kit</div>
+                </div>
+                <div class="arrow">→</div>
+            </a>
+            
+            <a href="Lead Screw Nut Brochure Rev 8 2025.pdf" class="pdf-item" target="_blank">
+                <div class="pdf-icon">PDF</div>
+                <div class="pdf-info">
+                    <div class="pdf-title">Lead Screw</div>
+                    <div class="pdf-description">Lead Screw Nut Upgrade</div>
+                </div>
+                <div class="arrow">→</div>
+            </a>
+            
+            <a href="BSI-985 Trenton Computer Upgrade With Total and Installation Rev 8 2025.pdf" class="pdf-item" target="_blank">
+                <div class="pdf-icon">PDF</div>
+                <div class="pdf-info">
+                    <div class="pdf-title">BSI-985 Kit</div>
+                    <div class="pdf-description">BSI-985 Computer Upgrade Package</div>
+                </div>
+                <div class="arrow">→</div>
+            </a>
+            <a href="Dallas Key REV 8 2025.pdf" class="pdf-item" target="_blank">
+                <div class="pdf-icon">PDF</div>
+                <div class="pdf-info">
+                    <div class="pdf-title">Dallas Key</div>
+                    <div class="pdf-description">Dallas Key Replacement</div>
+                </div>
+                <div class="arrow">→</div>
+            </a>
+            
+            <!--<a href="277266-BSI Timing Gen Rev 82525.pdf" class="pdf-item" target="_blank">
+                <div class="pdf-icon">PDF</div>
+                <div class="pdf-info">
+                    <div class="pdf-title">277266 Timing Generator</div>
+                    <div class="pdf-description">6220 Timing Generator Replacement</div>
+                </div>
+                <div class="arrow">→</div>
+            </a>-->
+            
+            <a href="BSI Tencor Surfscan Mouse 8 2025.pdf" class="pdf-item" target="_blank">
+                <div class="pdf-icon">PDF</div>
+                <div class="pdf-info">
+                    <div class="pdf-title">Mouse Upgrade</div>
+                    <div class="pdf-description">BSI Mouse Upgrade</div>
+                </div>
+                <div class="arrow">→</div>
+            </a>
+            
+            <a href="BSI NEW Print Server 8 2025.pdf" class="pdf-item" target="_blank">
+                <div class="pdf-icon">PDF</div>
+                <div class="pdf-info">
+                    <div class="pdf-title">Print Server</div>
+                    <div class="pdf-description">Legacy Tool Print Server</div>
+                </div>
+                <div class="arrow">→</div>
+            </a>
+            <a href="BSI Tencor Surfscan Parts Contracts 9 15 25.pdf" class="pdf-item" target="_blank">
+                <div class="pdf-icon">PDF</div>
+                <div class="pdf-info">
+                    <div class="pdf-title">Parts Contract</div>
+                    <div class="pdf-description">BSI Tencor Surfscan Parts Contracts</div>
+                </div>
+                <div class="arrow">→</div>
+            </a>
+            
+            <a href="BSI Unlimited Virtual PM Cal Support Rev 9 15 25.pdf" class="pdf-item" target="_blank">
+                <div class="pdf-icon">PDF</div>
+                <div class="pdf-info">
+                    <div class="pdf-title">Virtual PM and Cal</div>
+                    <div class="pdf-description">Unlimited Virtual PM and Cal Support</div>
+                </div>
+                <div class="arrow">→</div>
+            </a>
+            
+            <!--<a href="188859-BSI MDD Board Rev 8 25 25.pdf" class="pdf-item" target="_blank">
+                <div class="pdf-icon">PDF</div>
+                <div class="pdf-info">
+                    <div class="pdf-title">MDD Board</div>
+                    <div class="pdf-description">Motor Distribution/Driver Board Upgrade</div>
+                </div>
+                <div class="arrow">→</div>
+            </a>-->
+            
+            <a href="BSI Argon Laser EOL 9 17 25.pdf" class="pdf-item" target="_blank">
+                <div class="pdf-icon">PDF</div>
+                <div class="pdf-info">
+                    <div class="pdf-title">Argon Laser</div>
+                    <div class="pdf-description">BSI Argon Laser EOL</div>
+                </div>
+                <div class="arrow">→</div>
+            </a>
+            <a href="BSI NEW Tencor Circuit Boards Rev 9 17 25.pdf" class="pdf-item" target="_blank">
+                <div class="pdf-icon">PDF</div>
+                <div class="pdf-info">
+                    <div class="pdf-title">New PCB's</div>
+                    <div class="pdf-description">BSI NEW Tencor Circuit Boards</div>
+                </div>
+                <div class="arrow">→</div>
+            </a>
+            
+            <!--<a href="277266-BSI Timing Gen Rev 82525.pdf" class="pdf-item" target="_blank">
+                <div class="pdf-icon">PDF</div>
+                <div class="pdf-info">
+                    <div class="pdf-title">277266 Timing Generator</div>
+                    <div class="pdf-description">6220 Timing Generator Replacement</div>
+                </div>
+                <div class="arrow">→</div>
+            </a>-->
+            
+            <a href="BSI Tencor 6100 Surfscan Ulitmate 9 17 25.pdf" class="pdf-item" target="_blank">
+                <div class="pdf-icon">PDF</div>
+                <div class="pdf-info">
+                    <div class="pdf-title">BSI Tencor 6100</div>
+                    <div class="pdf-description">BSI Tencor 6100's for Sale</div>
+                </div>
+                <div class="arrow">→</div>
+            </a>
+            
+            <a href="BSI Tencor Surfscan Refurbishment 9 17 25.pdf" class="pdf-item" target="_blank">
+                <div class="pdf-icon">PDF</div>
+                <div class="pdf-info">
+                    <div class="pdf-title">Surfscan Refurbishment</div>
+                    <div class="pdf-description">BSI 6xxx Surfscan Refurbishments</div>
+                </div>
+                <div class="arrow">→</div>
+            </a>
+            <!--<a href="BSI Tencor Surfscan Refurbishment 9 17 25.pdf" class="pdf-item" target="_blank">
+                <div class="pdf-icon">PDF</div>
+                <div class="pdf-info">
+                    <div class="pdf-title">Surfscan Refurbishment</div>
+                    <div class="pdf-description">BSI 6xxx Surfscan Refurbishments</div>
+                </div>
+                <div class="arrow">→</div>
+            </a>-->
+            <a href="BSI Line Card Rev 10 2024.pdf" class="pdf-item" target="_blank">
+                <div class="pdf-icon">PDF</div>
+                <div class="pdf-info">
+                    <div class="pdf-title">BSI Line Card</div>
+                    <div class="pdf-description">BSI Complete List of Services</div>
+                </div>
+                <div class="arrow">→</div>
+            </a>
+        </div>
+    </div>
+    
+    <script>
+        // Generate QR code for current page URL
+        const currentUrl = window.location.href;
+        new QRCode(document.getElementById("qrcode"), {
+            text: currentUrl,
+            width: 200,
+            height: 200,
+            colorDark: "#667eea",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+        
+
+    </script>
+</body>
+</html>
