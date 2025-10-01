@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Feedback</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        
+        .stat-value {
+            color: #333;
+            font-size: 32px;
+            font-weight: bold;
+        }
+        
+        .controls {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .refresh-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .refresh-btn:hover {
+            background: #5568d3;
+        }
+        
+        .feedback-grid {
+            display: grid;
+            gap: 20px;
+        }
+        
+        .feedback-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .feedback-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+        }
+        
+        .feedback-meta {
+            flex-grow: 1;
+        }
+        
+        .feedback-name {
+            font-weight: 600;
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .feedback-contact {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 3px;
+        }
+        
+        .feedback-date {
+            font-size: 13px;
+            color: #999;
+        }
+        
+        .feedback-rating {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+        
+        .star {
+            color: #ffc107;
+            font-size: 18px;
+        }
+        
+        .star.empty {
+            color: #ddd;
+        }
+        
+        .feedback-message {
+            color: #444;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .feedback-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        
+        .delete-btn:hover {
+            background: #c82333;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .empty-state h2 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .empty-state p {
+            color: #666;
+        }
+        
+        .filter-section {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .filter-select {
+            padding: 8px 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .filter-section {
+                width: 100%;
+                flex-direction: column;
+            }
+            
+            .filter-select {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Feedback Dashboard</h1>
+            <p>Monitor and manage customer feedback</p>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-label">Total Feedback</div>
+                <div class="stat-value" id="totalCount">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Average Rating</div>
+                <div class="stat-value" id="avgRating">-</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Today's Feedback</div>
+                <div class="stat-value" id="todayCount">0</div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <div class="filter-section">
+                <label for="ratingFilter">Filter by Rating:</label>
+                <select id="ratingFilter" class="filter-select">
+                    <option value="all">All Ratings</option>
+                    <option value="5">5 Stars</option>
+                    <option value="4">4 Stars</option>
+                    <option value="3">3 Stars</option>
+                    <option value="2">2 Stars</option>
+                    <option value="1">1 Star</option>
+                    <option value="null">No Rating</option>
+                </select>
+            </div>
+            <button class="refresh-btn" onclick="loadFeedback()">🔄 Refresh</button>
+        </div>
+        
+        <div id="feedbackContainer" class="loading">
+            Loading feedback...
+        </div>
+    </div>
+    
+    <script>
+        let allFeedback = [];
+        
+        async function loadFeedback() {
+            const container = document.getElementById('feedbackContainer');
+            container.innerHTML = '<div class="loading">Loading feedback...</div>';
+            
+            try {
+                const response = await fetch('/api/admin/feedback');
+                const data = await response.json();
+                
+                allFeedback = data;
+                updateStats();
+                displayFeedback(data);
+            } catch (error) {
+                console.error('Error loading feedback:', error);
+                container.innerHTML = '<div class="empty-state"><h2>Error loading feedback</h2><p>Please check your connection and try again.</p></div>';
+            }
+        }
+        
+        function updateStats() {
+            const totalCount = allFeedback.length;
+            document.getElementById('totalCount').textContent = totalCount;
+            
+            const ratingsOnly = allFeedback.filter(f => f.rating).map(f => f.rating);
+            const avgRating = ratingsOnly.length > 0 
+                ? (ratingsOnly.reduce((a, b) => a + b, 0) / ratingsOnly.length).toFixed(1)
+                : '-';
+            document.getElementById('avgRating').textContent = avgRating;
+            
+            const today = new Date().toDateString();
+            const todayCount = allFeedback.filter(f => 
+                new Date(f.created_at).toDateString() === today
+            ).length;
+            document.getElementById('todayCount').textContent = todayCount;
+        }
+        
+        function displayFeedback(feedbackList) {
+            const container = document.getElementById('feedbackContainer');
+            
+            if (feedbackList.length === 0) {
+                container.innerHTML = '<div class="empty-state"><h2>No feedback yet</h2><p>Customer feedback will appear here once submitted.</p></div>';
+                return;
+            }
+            
+            container.innerHTML = '<div class="feedback-grid">' + 
+                feedbackList.map(feedback => createFeedbackCard(feedback)).join('') + 
+                '</div>';
+        }
+        
+        function createFeedbackCard(feedback) {
+            const date = new Date(feedback.created_at);
+            const formattedDate = date.toLocaleDateString() + ' at ' + date.toLocaleTimeString();
+            
+            const ratingHTML = feedback.rating 
+                ? `<div class="feedback-rating">${createStars(feedback.rating)}</div>`
+                : '';
+            
+            const nameDisplay = feedback.name || 'Anonymous';
+            const emailDisplay = feedback.email ? `<div class="feedback-contact">📧 ${feedback.email}</div>` : '';
+            const companyDisplay = feedback.company ? `<div class="feedback-contact">🏢 ${feedback.company}</div>` : '';
+            
+            return `
+                <div class="feedback-card" data-id="${feedback.id}">
+                    <div class="feedback-header">
+                        <div class="feedback-meta">
+                            <div class="feedback-name">${nameDisplay}</div>
+                            ${emailDisplay}
+                            ${companyDisplay}
+                            <div class="feedback-date">${formattedDate}</div>
+                        </div>
+                    </div>
+                    ${ratingHTML}
+                    <div class="feedback-message">${escapeHtml(feedback.message)}</div>
+                    <div class="feedback-actions">
+                        <button class="delete-btn" onclick="deleteFeedback(${feedback.id})">🗑️ Delete</button>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function createStars(rating) {
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                stars += `<span class="star ${i <= rating ? '' : 'empty'}">★</span>`;
+            }
+            return stars;
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        async function deleteFeedback(id) {
+            if (!confirm('Are you sure you want to delete this feedback?')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/api/admin/feedback/${id}`, {
+                    method: 'DELETE'
+                });
+                
+                if (response.ok) {
+                    loadFeedback();
+                } else {
+                    alert('Failed to delete feedback');
+                }
+            } catch (error) {
+                console.error('Error deleting feedback:', error);
+                alert('Failed to delete feedback');
+            }
+        }
+        
+        // Filter functionality
+        document.getElementById('ratingFilter').addEventListener('change', function() {
+            const filterValue = this.value;
+            
+            let filteredFeedback = allFeedback;
+            
+            if (filterValue !== 'all') {
+                if (filterValue === 'null') {
+                    filteredFeedback = allFeedback.filter(f => !f.rating);
+                } else {
+                    filteredFeedback = allFeedback.filter(f => f.rating == filterValue);
+                }
+            }
+            
+            displayFeedback(filteredFeedback);
+        });
+        
+        // Load feedback on page load
+        loadFeedback();
+        
+        // Auto-refresh every 30 seconds
+        setInterval(loadFeedback, 30000);
+    </script>
+</body>
+</html>
